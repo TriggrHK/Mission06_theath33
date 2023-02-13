@@ -30,11 +30,14 @@ namespace FilmCollection.Controllers
             return View();
         }
 
+        //for when the form gets rendered to have data entered
         [HttpGet]
         public IActionResult MovieForm()
         {
             return View();
         }
+
+        //When a form is submitted it becomes a POST and redirects the page to "Confirmation", this also saves the film to the sqlite db
         [HttpPost]
         public IActionResult MovieForm(FilmData film)
         {

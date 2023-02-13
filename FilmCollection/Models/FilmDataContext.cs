@@ -17,6 +17,7 @@ namespace FilmCollection.Models
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            //add some data to be seeded into the database
             mb.Entity<FilmData>().HasData(
                 new FilmData
                 {
