@@ -7,20 +7,27 @@
 <h1>Movie Form</h1>
 <div>
     <form method="post">
-        <label asp-for="Category">Category:</label>
-        <input asp-for="Category" required/> <br />
+        <div asp-validation-summary="All"></div>
 
+        <label asp-for="CategoryId">Category:</label>
+        <select class="form-control-sm" asp-for="CategoryId" required>
+            <option value="">Select a Category</option>
+            @foreach (Category c in ViewBag.Categories)
+            {
+                <option value="@c.CategoryId">@c.CategoryName</option>
+            }
+        </select> <br />
         <label asp-for="Title">Title:</label>
-        <input asp-for="Title" required/> <br />
+        <input class="form-control-sm"  asp-for="Title" required /> <br />
 
         <label asp-for="Year">Year:</label>
-        <input type="number" asp-for="Year" required/> <br />
+        <input class="form-control-sm" type="number" asp-for="Year" required /> <br />
 
         <label asp-for="Director">Director:</label>
-        <input asp-for="Director" required/> <br />
+        <input class="form-control-sm" asp-for="Director" required /> <br />
 
         <label asp-for="Rating">Rating:</label>
-        <select asp-for="Rating" required>
+        <select class="form-control-sm" asp-for="Rating" required>
             <option value="G">G</option>
             <option value="PG">PG</option>
             <option value="PG-13">PG-13</option>
@@ -28,17 +35,17 @@
         </select> <br />
 
         <label asp-for="Edited">Edited:</label>
-        <select asp-for="Edited">
+        <select class="form-control-sm" asp-for="Edited">
             <option value="yes">Was Edited</option>
             <option value="no">Not Edited</option>
         </select> <br />
 
         <label asp-for="Lent_To">Lent to:</label>
-        <input asp-for="Lent_To" /> <br />
+        <input class="form-control-sm" asp-for="Lent_To" /> <br />
 
         <label asp-for="Notes">Notes:</label>
-        <input asp-for="Notes" maxlength="25"/> <br />
+        <input class="form-control-sm" asp-for="Notes" maxlength="25" /> <br />
 
-        <button type="submit">Add Movie</button>
+        <button class="btn btn-primary" type="submit">Add Movie</button>
     </form>
 </div>

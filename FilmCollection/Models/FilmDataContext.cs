@@ -14,15 +14,23 @@ namespace FilmCollection.Models
         }
 
         public DbSet<FilmData> Responses { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category { CategoryId = 1, CategoryName = "Musical" },
+                new Category { CategoryId = 2, CategoryName = "Fantasy" },
+                new Category { CategoryId = 3, CategoryName = "Family" },
+                new Category { CategoryId = 4, CategoryName = "Action" },
+                new Category { CategoryId = 5, CategoryName = "Other" }
+            );
             //add some data to be seeded into the database
             mb.Entity<FilmData>().HasData(
                 new FilmData
                 {
                     FilmId = 1,
-                    Category = "Musical",
+                    CategoryId = 1,
                     Title = "The Greatest Showman",
                     Year = 2017,
                     Director = "Michael Gracey",
@@ -33,7 +41,7 @@ namespace FilmCollection.Models
                 new FilmData
                 {
                     FilmId = 2,
-                    Category = "Fantasy",
+                    CategoryId = 2,
                     Title = "Harry Potter: The Deathly Hallows Pt. 2",
                     Year = 2011,
                     Director = "David Yates",
@@ -44,7 +52,7 @@ namespace FilmCollection.Models
                 new FilmData
                 {
                     FilmId = 3,
-                    Category = "Family",
+                    CategoryId = 3,
                     Title = "Kung Fu Panda",
                     Year = 2008,
                     Director = "John Stevenson, Mark Osborne",

@@ -34,6 +34,7 @@ namespace FilmCollection.Controllers
         [HttpGet]
         public IActionResult MovieForm()
         {
+            ViewBag.Categories = _filmContext.Categories.ToList();
             return View();
         }
 
@@ -41,10 +42,56 @@ namespace FilmCollection.Controllers
         [HttpPost]
         public IActionResult MovieForm(FilmData film)
         {
-            _filmContext.Add(film);
+            if (ModelState.IsValid)
+            {
+                _filmContext.Add(film);
+                _filmContext.SaveChanges();
+
+                return View("Confirmation", film);
+            }
+            else
+            {
+                ViewBag.Categories = _filmContext.Categories.ToList();
+                return View();
+            }
+        }
+
+        public IActionResult MovieList ()
+        {
+            var movies = _filmContext.Responses
+                .ToList();
+            return View(movies);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int filmid)
+        {
+            ViewBag.Categories = _filmContext.Categories.ToList();
+
+            var film = _filmContext.Responses.Single(x => x.FilmId == filmid);
+            return View("MovieForm", film);
+        }
+        [HttpPost]
+        public IActionResult Edit(FilmData film)
+        {
+            _filmContext.Update(film);
             _filmContext.SaveChanges();
 
-            return View("Confirmation", film);
+            return RedirectToAction("MovieList");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int filmid)
+        {
+            var film = _filmContext.Responses.Single(x => x.FilmId == filmid);
+            return View(film);
+        }
+        [HttpPost]
+        public IActionResult Delete(FilmData film)
+        {
+            _filmContext.Responses.Remove(film);
+            _filmContext.SaveChanges();
+            return RedirectToAction("MovieList");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

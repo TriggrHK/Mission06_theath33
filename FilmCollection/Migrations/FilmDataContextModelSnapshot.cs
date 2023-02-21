@@ -15,15 +15,55 @@ namespace FilmCollection.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32");
 
+            modelBuilder.Entity("FilmCollection.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Musical"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Fantasy"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            CategoryName = "Action"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            CategoryName = "Other"
+                        });
+                });
+
             modelBuilder.Entity("FilmCollection.Models.FilmData", b =>
                 {
                     b.Property<int>("FilmId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -52,13 +92,15 @@ namespace FilmCollection.Migrations
 
                     b.HasKey("FilmId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             FilmId = 1,
-                            Category = "Musical",
+                            CategoryId = 1,
                             Director = "Michael Gracey",
                             Edited = "no",
                             Notes = "Mom's favorite movie",
@@ -69,7 +111,7 @@ namespace FilmCollection.Migrations
                         new
                         {
                             FilmId = 2,
-                            Category = "Fantasy",
+                            CategoryId = 2,
                             Director = "David Yates",
                             Edited = "yes",
                             Lent_To = "Older Brother",
@@ -80,13 +122,22 @@ namespace FilmCollection.Migrations
                         new
                         {
                             FilmId = 3,
-                            Category = "Family",
+                            CategoryId = 3,
                             Director = "John Stevenson, Mark Osborne",
                             Edited = "no",
                             Rating = "PG",
                             Title = "Kung Fu Panda",
                             Year = 2008
                         });
+                });
+
+            modelBuilder.Entity("FilmCollection.Models.FilmData", b =>
+                {
+                    b.HasOne("FilmCollection.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
