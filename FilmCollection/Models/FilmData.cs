@@ -11,8 +11,6 @@ namespace FilmCollection.Models
         [Key]
         [Required]
         public int FilmId { get; set; }
-        //[Required]
-        //public string Category { get; set; }
         [Required]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
