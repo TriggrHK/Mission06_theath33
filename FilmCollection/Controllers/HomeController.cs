@@ -42,6 +42,7 @@ namespace FilmCollection.Controllers
         [HttpPost]
         public IActionResult MovieForm(FilmData film)
         {
+            //if the constraints fit the model then save the changes
             if (ModelState.IsValid)
             {
                 _filmContext.Add(film);
@@ -58,8 +59,7 @@ namespace FilmCollection.Controllers
 
         public IActionResult MovieList ()
         {
-            var movies = _filmContext.Responses
-                .ToList();
+            var movies = _filmContext.Responses.ToList();
             return View(movies);
         }
 
@@ -68,27 +68,40 @@ namespace FilmCollection.Controllers
         {
             ViewBag.Categories = _filmContext.Categories.ToList();
 
+            //render the movie form html page with the given film object
             var film = _filmContext.Responses.Single(x => x.FilmId == filmid);
             return View("MovieForm", film);
         }
         [HttpPost]
         public IActionResult Edit(FilmData film)
         {
-            _filmContext.Update(film);
-            _filmContext.SaveChanges();
+            //make sure data being saved works for the model then make an update
+            if (ModelState.IsValid)
+            {
+                _filmContext.Update(film);
+                _filmContext.SaveChanges();
 
-            return RedirectToAction("MovieList");
+                return RedirectToAction("MovieList");
+            }
+            else
+            {
+                //redirect to the GET request for the render page if there was an error,
+                //this should only be called if values are changed through inspect Element
+                return RedirectToAction("Edit", new { filmid = film.FilmId });
+            }
         }
 
         [HttpGet]
         public IActionResult Delete(int filmid)
         {
+            //find the row to delete
             var film = _filmContext.Responses.Single(x => x.FilmId == filmid);
             return View(film);
         }
         [HttpPost]
         public IActionResult Delete(FilmData film)
         {
+            //remove the object found in the get request for the delete page
             _filmContext.Responses.Remove(film);
             _filmContext.SaveChanges();
             return RedirectToAction("MovieList");
